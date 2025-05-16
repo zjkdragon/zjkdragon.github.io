@@ -10,5 +10,5 @@ export default defineConfig({
   build: {
     outDir: 'docs',
   },
-  base: '/zjkdragon.github.io/'
+  base: '/docs/'
 })
