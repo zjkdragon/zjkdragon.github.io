@@ -11,6 +11,10 @@
   "devDependencies": {
     "@vitejs/plugin-legacy": "^6.1.1",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-pwa": "^1.0.0"
+  },
+  "dependencies": {
+    "@mlc-ai/web-llm": "^0.2.79"
   }
 }
