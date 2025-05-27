@@ -12,14 +12,11 @@ export default defineConfig({
       manifest: false,
       registerType: 'autoUpdate',
       workbox: {
-        maximumFileSizeToCacheInBytes: 12000000,
+        maximumFileSizeToCacheInBytes: 120000000,
         runtimeCaching: [
           // {
-          //   urlPattern: /(.*?)\.(wasm)/, // 接口缓存 此处填你想缓存的接口正则匹配
-          //   handler: 'CacheFirst',
-          //   options: {
-          //     cacheName: 'interface-cache',
-          //   },
+          //   urlPattern: /(.*?)\.(html)/, // 接口缓存 此处填你想缓存的接口正则匹配
+          //   handler: 'NetworkFirst',
           // },
           // 添加模型缓存路径
           {
@@ -50,6 +47,24 @@ export default defineConfig({
                   cachedResponseWillBeUsed: async ({ request, cachedResponse }) => {
                     const customCache = await caches.open('webllm/config');
                     const response = await customCache.match(request.url.match(/.*?(\/mlc-ai\/Qwen3-0.6B-q0f16-MLC\/resolve\/main\/.*?\.json)/)[1]);
+                    return response || cachedResponse;
+                  },
+                },
+              ],
+            }
+          },
+          {
+            urlPattern: /.*?(\/resolve\/main\/.*?\.(json|onnx|bin))/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'transformers-cache',
+              plugins: [
+                {
+                  // 确保优先返回手动写入的缓存
+                  cachedResponseWillBeUsed: async ({ request, cachedResponse }) => {
+                    const customCache = await caches.open('transformers-cache');
+                    const response = await customCache.match(request.url.match(/https:\/\/huggingface.co(.*?\/resolve\/main\/.*?\.(json|onnx|bin))/)[1]);
+                    console.log(response);
                     return response || cachedResponse;
                   },
                 },
