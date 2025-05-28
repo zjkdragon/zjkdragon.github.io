@@ -11,7 +11,7 @@ import { conversation } from './conversation/qwen3';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
-    <button id="recognition" type="button">说话2</button>
+    <button id="recognition" type="button">对话</button>
     <button id="loadModel" type="button">模型</button>
   </div>
 `;
@@ -47,40 +47,6 @@ run();
 (async function() {
   recognition(conversation);
 })();
-(async function() {
-
-
-
-  console.log("start engine");
-
-  recognition(console.log);
-    // const reply0 = await (engine.chat.completions.create({
-    //   messages: [{
-    //     role: "system", content: "你需要记住你的信息。姓名：小明，性别：男，年龄：24岁，职业：程序员。" +
-    //       "下次问到这些信息的时候，问哪个信息你回答哪个。" +
-    //       "被询问哪个信息就只说出被询问的信息，不要说没有问的信息，问一个回一个，问两个回两个，问三个回三个。"
-    //   },
-    //   { role: "user", content: d2.text }],
-    //   // below configurations are all optional
-    //   n: 1,
-    //   temperature: 1,
-    //   max_tokens: 20000,
-    //   logit_bias: {
-    //     "46510": -100,
-    //     "7188": -100,
-    //     "8421": 5,
-    //     "51325": 5,
-    //   },
-    //   logprobs: true,
-    //   top_logprobs: 2,
-    // }));
-    // const result = reply0.choices[0].message.content;
-    // const txt = result?.split("</think>\n\n")[1];
-    // console.log(txt);
-    // txt && speak(txt);
-    // console.log(reply0.usage);
-  // });
-});
 
 // 添加模型加载按钮事件
 document.getElementById('loadModel')!.addEventListener('click', async () => {

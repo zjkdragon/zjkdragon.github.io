@@ -5,7 +5,7 @@ export const transcribe = async (audio: Float32Array): Promise<any> => {
   // Create automatic speech recognition pipeline
   const transcriber = await pipeline(
     "automatic-speech-recognition",
-    "openai/whisper-small",
+    "WhisperForConditionalGeneration",
     { device: "webgpu" },
   );
 
