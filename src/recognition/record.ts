@@ -1,6 +1,7 @@
 import WhisperWorker from '../workers/whisper?worker';
 
 const whisperWorker = new WhisperWorker();
+whisperWorker.postMessage({ type: "init" });
 
 const whisperAudio = async (data: Blob) => {
   async function convertAudio(blob: Blob) {

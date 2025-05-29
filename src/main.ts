@@ -1,13 +1,8 @@
 import './style.css'
-// import typescriptLogo from './typescript.svg'
-// import viteLogo from '/vite.svg'
-// import { setupCounter } from './counter.ts'
 
 import { run } from './three/three';
 import { recognition } from './recognition/record';
 import { conversation } from './conversation/qwen3';
-// import { speak } from './speak/speak';
-// import { transcribe } from './voiceService';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -16,33 +11,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   </div>
 `;
 
-// document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-//   <div>
-//     <a href="https://vite.dev" target="_blank">
-//       <img src="${viteLogo}" class="logo" alt="Vite logo" />
-//     </a>
-//     <a href="https://www.typescriptlang.org/" target="_blank">
-//       <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-//     </a>
-//     <h1>Vite + TypeScript</h1>
-//     <div class="card">
-//       <button id="counter" type="button"></button>
-//       <button id="loadModel" type="button">Load Local Model</button>
-//     </div>
-//     <p class="read-the-docs">
-//       Click on the Vite and TypeScript logos to learn more
-//     </p>
-//   </div>
-// `
-//
-// setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
-
 run();
-
-
-// const modelCacheName = "webllm/model";
-// const modelConfigCacheName = "webllm/config";
-// const modelCachePerfix = "";
 
 (async function() {
   recognition(conversation);
@@ -77,24 +46,41 @@ document.getElementById('loadModel')!.addEventListener('click', async () => {
 
     if (!folderPath) return;
 
-    // 处理每个文件
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
       // 路径处理
       const subPath = file.webkitRelativePath.replace(/^.*?\//, "");
-      debugger;
       if (subPath.startsWith(".") || file.name.startsWith(".")) continue;
 
-      const relativePath = `${folderPath}/resolve/main/${subPath}`
-      console.log(`处理文件: ${relativePath}`);
+      const relativePath = `${folderPath}/resolve/main/${subPath}`;
+      console.log(`处理文件: ${relativePath} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
 
       try {
-        const arrayBuffer = await file.arrayBuffer();
-        await modelCache.put(relativePath, new Response(arrayBuffer));
-        console.log(`Model ${file.name} cached successfully`);
-      } catch (error) {
-        console.error(error);
+        // 完全使用流式API处理
+        const stream = file.stream();
+
+        // 创建新的Response对象（使用流而不是Blob）
+        const response = new Response(stream, {
+          headers: {
+            'Content-Type': file.type,
+            'Content-Length': file.size.toString()
+          }
+        });
+
+        // 尝试放入缓存
+        await modelCache.put(relativePath, response);
+        console.log(`✅ Model ${file.name} 缓存成功`);
+
+      } catch (error: any) {
+        console.error(`❌ 文件处理失败: ${file.name}`, error);
+
+        // 增强错误处理
+        if (error.name === 'QuotaExceededError') {
+          console.error('存储配额不足，请清理缓存');
+        } else if (error.message.includes('internal error')) {
+          console.error('浏览器内部错误，尝试分片缓存方案...');
+        }
       }
     }
   };

@@ -12,7 +12,7 @@ export default defineConfig({
       manifest: false,
       registerType: 'autoUpdate',
       workbox: {
-        maximumFileSizeToCacheInBytes: 120000000,
+        maximumFileSizeToCacheInBytes: 1200000000000000,
         runtimeCaching: [
           // {
           //   urlPattern: /(.*?)\.(html)/, // 接口缓存 此处填你想缓存的接口正则匹配
@@ -54,7 +54,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /.*?(\/resolve\/main\/.*?\.(json|onnx|bin))/,
+            urlPattern: /https:\/\/huggingface.co.*?(\/resolve\/main\/.*?\.(json|onnx|bin))/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'transformers-cache',

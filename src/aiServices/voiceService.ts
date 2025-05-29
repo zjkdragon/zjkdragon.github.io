@@ -1,14 +1,20 @@
 import { pipeline } from "@huggingface/transformers";
 
+// 不允许跨域
+// env.remoteHost = "https://hf-mirror.com";
 
-export const transcribe = async (audio: Float32Array): Promise<any> => {
+let transcriber: any;
+
+export const init = async () => {
   // Create automatic speech recognition pipeline
-  const transcriber = await pipeline(
+  transcriber = await pipeline(
     "automatic-speech-recognition",
     "WhisperForConditionalGeneration",
     { device: "webgpu" },
   );
+}
 
+export const transcribe = async (audio: Float32Array): Promise<any> => {
   // Transcribe audio from a URL
   //const url = "https://img.tukuppt.com/ai_audio/wav/zhida.wav";
   const output = await transcriber(audio, {

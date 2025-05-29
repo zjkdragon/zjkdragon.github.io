@@ -2,6 +2,7 @@ import ConversationWorker from '../workers/qwen3?worker';
 import { speak } from '../speak/speak';
 
 const conversationWorker = new ConversationWorker();
+conversationWorker.postMessage({ type: "init" });
 
 export const conversation = (message: string) => {
   conversationWorker.onmessage = (event) => {
