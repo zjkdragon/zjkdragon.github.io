@@ -1,4 +1,4 @@
-import { conversation } from '../aiServices/llmConversationService';
+import { conversation } from '../aiServices/ollamaService';
 
 onmessage = async function(event) {
   console.log(event);
