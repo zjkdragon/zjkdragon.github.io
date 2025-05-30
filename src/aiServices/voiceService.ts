@@ -10,7 +10,7 @@ export const init = async () => {
   transcriber = await pipeline(
     "automatic-speech-recognition",
     "WhisperForConditionalGeneration",
-    { device: "webgpu" },
+    { dtype: "fp32", device: "webgpu" },
   );
 }
 
