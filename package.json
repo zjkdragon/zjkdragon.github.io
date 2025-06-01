@@ -22,9 +22,11 @@
     "@gltf-transform/functions": "^4.1.3",
     "@huggingface/transformers": "^3.5.1",
     "@langchain/core": "^0.3.57",
+    "@langchain/mcp-adapters": "^0.5.1",
     "@langchain/ollama": "^0.2.0",
     "@mlc-ai/web-llm": "^0.2.79",
     "langchain": "^0.3.27",
+    "rxjs": "^7.8.2",
     "three": "^0.176.0"
   }
 }

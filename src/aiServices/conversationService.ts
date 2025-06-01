@@ -24,7 +24,7 @@ export const conversation = async (message: string) => {
 
   try {
     const output: any = await generator(messages, {
-      max_new_tokens: 2000
+      max_new_tokens: 8000
     });
     return output[0].generated_text.slice(-1)[0].content.split("</think>\n\n")[1];
   } catch (e) {

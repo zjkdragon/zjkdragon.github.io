@@ -3,6 +3,15 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  // 防止 worker build 报错
+  worker: {
+    rollupOptions: {
+      output: {
+        format: "iife",
+        inlineDynamicImports: true,
+      },
+    },
+  },
   plugins: [
     // legacy({
     //   targets: ['defaults', 'not IE 11']
