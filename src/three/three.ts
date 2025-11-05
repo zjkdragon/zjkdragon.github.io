@@ -200,8 +200,8 @@ export const run = () => {
     const axesHelper = new THREE.AxesHelper(500)
     scene.add(axesHelper)
 
-    const camera = new THREE.OrthographicCamera(-100, 100, 100, -100, 0, 5000); //创建照相机;照相机默认坐标为(0,0,0); 默认面向为沿z轴向里观察;
-    camera.position.set(0, 20, 100);  //设置照相机的位置
+    const camera = new THREE.OrthographicCamera(-100, 100, 100, -100, 0, 500); //创建照相机;照相机默认坐标为(0,0,0); 默认面向为沿z轴向里观察;
+    camera.position.set(0, 50, 50);  //设置照相机的位置
     camera.lookAt(new THREE.Vector3(0, 0, 0)); //设置照相机面向(0,0,0)坐标观察
     // 更新正交相机参数（这部分也需要在初始化时执行）
     const aspect = window.innerWidth / window.innerHeight;
@@ -234,17 +234,29 @@ export const run = () => {
 
     const hemiLight = new THREE.HemisphereLight(0xffeeb1, 0x080820, 8);  //创建光源
 
-    const geometry = new THREE.BoxGeometry(20, 20, 20); //创建一个立方体几何对象Geometry
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x705070
-    }); //材质对象Material
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(0, 10, 0);
+    // const geometry = new THREE.BoxGeometry(20, 20, 20); //创建一个立方体几何对象Geometry
+    // const material = new THREE.MeshBasicMaterial({
+    //   color: 0x705070
+    // }); //材质对象Material
+    // const mesh = new THREE.Mesh(geometry, material);
+    // mesh.position.set(0, 10, 0);
+    // scene.add(mesh); //网格模型添加到场景中
 
     // scene.add(light);  //在场景中添加光源
     scene.add(dirLight);  //在场景中添加光源
     scene.add(hemiLight);  //在场景中添加光源
-    // scene.add(mesh); //网格模型添加到场景中
+
+    // 添加地面
+    const floorGeometry = new THREE.PlaneGeometry(200,200)
+    const material = new THREE.MeshPhysicalMaterial({
+      color:0x808080,
+      side:THREE.DoubleSide,
+      metalness:0,
+      roughness:0.1
+    })
+    const floorMesh = new THREE.Mesh(floorGeometry,material)
+    floorMesh.rotation.x = Math.PI / 2
+    scene.add(floorMesh)
 
     const loader = new GLTFLoader();
 
@@ -261,8 +273,8 @@ export const run = () => {
       console.log("animations: ", glb.animations);
       mixer.clipAction(glb.animations[lastAnimation]).play();
 
-      robotModel.scale.set(20, 20, 20);
-      robotModel.position.set(0, -20, 0);
+      robotModel.scale.set(10, 10, 10);
+      robotModel.position.set(0, 0, 0);
       robotModel.rotateY(Math.PI);
       scene.add(robotModel);
     });

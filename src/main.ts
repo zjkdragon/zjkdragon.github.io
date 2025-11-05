@@ -13,7 +13,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
 run();
 
-(async function() {
+(async function bindRecognitionButton() {
   recognition(conversation);
 })();
 

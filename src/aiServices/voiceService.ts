@@ -7,11 +7,13 @@ let transcriber: any;
 
 export const init = async () => {
   // Create automatic speech recognition pipeline
+  console.log('start transcriber');
   transcriber = await pipeline(
     "automatic-speech-recognition",
     "WhisperForConditionalGeneration",
     { dtype: "fp32", device: "webgpu" },
   );
+  console.log('end transcriber');
 }
 
 export const transcribe = async (audio: Float32Array): Promise<any> => {

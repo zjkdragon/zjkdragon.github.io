@@ -7,11 +7,13 @@ let generator: any;
 
 export const init = async () => {
   // Create automatic speech recognition pipeline
+  console.log('start conversation');
   generator = await pipeline(
     "text-generation",
     "Qwen3ForCausalLM",
     { dtype: "fp16", device: "webgpu" },
   );
+  console.log('end conversation');
 }
 
 export const conversation = async (message: string) => {

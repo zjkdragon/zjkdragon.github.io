@@ -2,6 +2,10 @@ import { defineConfig } from 'vite'
 // import legacy from '@vitejs/plugin-legacy'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// 这两个分析的数据有一些不一样，暂时先用一个好看点的
+import bundleAnalyzer from "rollup-plugin-bundle-analyzer";
+// import analyzer from "vite-bundle-analyzer";
+
 export default defineConfig({
   // 防止 worker build 报错
   worker: {
@@ -16,6 +20,8 @@ export default defineConfig({
     // legacy({
     //   targets: ['defaults', 'not IE 11']
     // }),
+    bundleAnalyzer(),
+    // analyzer(),
     VitePWA({
       includeAssets: ['favicon.svg'],
       manifest: false,

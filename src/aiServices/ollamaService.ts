@@ -42,7 +42,7 @@ const funcs: { [key: string]: any } = {
 export const init = async () => {
   function template(params: { func_feature: string, func_name: string, wait: boolean }) {
     const { func_feature, func_name, wait } = params;
-    return `我有一个可以让你${func_feature}的方法，你想要使用的时候可以告诉我你想要调用这个方法，格式是"<call>${func_name}:["参数1","参数2",...]</call>"${wait ? "，调用后等待回复的结果，然后再给出相应回答" : ""}。`
+    return `我有一个可以让你${func_feature}的方法，你想要使用的时候可以告诉我你想要调用这个方法，格式是"<call>${func_name}:["参数1","参数2",...]</call>"，或者没有参数时的调用"<call>${func_name}:[]</call>"${wait ? "，调用后等待回复的结果，然后再给出相应回答" : ""}。`
   }
 
   const systemMessage = template({
@@ -58,7 +58,7 @@ export const init = async () => {
     'func_name': "mcp_animation",
     "wait": false
   })
-  console.log(systemMessage);
+  console.log(systemMessage + "这些方法你记住在需要使用的时候可以调用，不需要给用户推荐。");
 
   const promptTemplate = ChatPromptTemplate.fromMessages([
     SystemMessagePromptTemplate.fromTemplate(systemMessage),
@@ -78,7 +78,7 @@ export const conversation = async (message: string): Promise<string> => {
   });
 
   console.log(response);
-  const reMsg = response.split("</think>\n\n")[1];
+  const reMsg = response.split("</think>")[1];
   const [callMsg1, callMsg2] = reMsg.split("</call");
   if (callMsg2) {
     const call = callMsg1.split("<call>")[1];
